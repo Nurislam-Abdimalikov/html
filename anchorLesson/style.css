@@ -344,3 +344,57 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   outline: 2px solid var(--neon-2);
   outline-offset: 4px;
 }
+
+/* ── панель с кодом — жидкое стекло ── */
+.code-panel {
+  width: min(720px, 92vw);
+  margin: 80px auto 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02) 40%),
+    rgba(13, 11, 25, 0.8);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(0, 224, 198, 0.10);
+}
+
+.code-panel__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.code-panel__bar span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.code-panel__bar span:nth-child(1) { background: #ff5f57; }
+.code-panel__bar span:nth-child(2) { background: #febc2e; }
+.code-panel__bar span:nth-child(3) { background: #28c840; }
+
+.code-panel__bar p {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.code-panel pre {
+  padding: 22px 24px;
+  overflow-x: auto;
+}
+
+.code-panel code {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #9fe8d8;
+  white-space: pre;
+}
