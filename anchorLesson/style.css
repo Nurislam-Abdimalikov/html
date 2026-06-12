@@ -252,10 +252,12 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* ── кнопка «Первый Дз» — жидкое стекло ── */
+/* ── кнопки «Дз» — жидкое стекло + кружащийся неон ── */
 .hw-link {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 24px;
   margin-top: 80px;
 }
 
@@ -263,7 +265,6 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   padding: 18px 44px;
   border-radius: 999px;
   overflow: hidden;
@@ -279,10 +280,6 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   background: rgba(255, 255, 255, 0.02);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
 }
-
-/* стрелочка */
-.hw-link a::marker { content: none; }
-.hw-link a span::after { content: none; }
 
 /* кружащийся неон вокруг кнопки */
 .hw-link a::before {
@@ -301,6 +298,12 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   animation: orbit 4s linear infinite;
 }
 
+/* у второй кнопки неон крутится в другую сторону */
+.hw-link a:nth-child(2)::before {
+  animation-duration: 6s;
+  animation-direction: reverse;
+}
+
 /* стеклянная поверхность поверх неона */
 .hw-link a::after {
   content: '';
@@ -316,13 +319,17 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
     inset 0 -8px 18px rgba(255, 255, 255, 0.04);
-  transition: background 0.35s ease;
 }
 
 /* hover: подъём + свечение + ускорение неона */
 .hw-link a:hover {
   transform: translateY(-4px) scale(1.05);
   filter: brightness(1.15) drop-shadow(0 12px 30px rgba(255, 78, 205, 0.25));
+}
+
+/* у второй кнопки свечение бирюзовое */
+.hw-link a:nth-child(2):hover {
+  filter: brightness(1.15) drop-shadow(0 12px 30px rgba(0, 224, 198, 0.25));
 }
 
 .hw-link a:hover::before {
@@ -333,7 +340,6 @@ ol > li:nth-child(6) { animation-delay: 0.55s; }
   transform: translateY(-1px) scale(1.01);
 }
 
-/* фокус с клавиатуры */
 .hw-link a:focus-visible {
   outline: 2px solid var(--neon-2);
   outline-offset: 4px;

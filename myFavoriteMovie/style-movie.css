@@ -1,7 +1,6 @@
-/* ===== Мои любимые животные — жидкое стекло + кружащийся неон ===== */
+/* ===== My Favorite Movie — жидкое стекло + кружащийся неон ===== */
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600&display=swap');
 
-/* анимируемый угол для вращения неона */
 @property --angle {
   syntax: '<angle>';
   initial-value: 0deg;
@@ -16,22 +15,21 @@
   --neon-3: #ff4ecd;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: #07060f;
   color: var(--text);
   min-height: 100vh;
-  padding: 72px 4vw 120px;
+  padding: 72px 5vw 120px;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ── живой фон: плавающие неоновые пятна ── */
+/* живой фон */
 body::before,
 body::after {
   content: '';
@@ -40,13 +38,13 @@ body::after {
   height: 55vmax;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: 0.30;
+  opacity: 0.3;
   z-index: -1;
   animation: float 18s ease-in-out infinite alternate;
 }
 
 body::before {
-  background: radial-gradient(circle, var(--neon-1), transparent 65%);
+  background: radial-gradient(circle, var(--neon-3), transparent 65%);
   top: -20vmax;
   left: -15vmax;
 }
@@ -64,158 +62,155 @@ body::after {
   to   { transform: translate(8vmax, 6vmax) scale(1.15); }
 }
 
-/* ── заголовок ── */
+/* заголовок */
 h1 {
   font-family: 'Unbounded', sans-serif;
   font-weight: 800;
-  font-size: clamp(30px, 5.5vw, 64px);
+  font-size: clamp(30px, 5.5vw, 60px);
   text-align: center;
-  letter-spacing: -0.02em;
-  background: linear-gradient(90deg, #fff 10%, var(--neon-1) 40%, var(--neon-3) 70%, var(--neon-2));
+  background: linear-gradient(90deg, #fff 10%, var(--neon-3) 45%, var(--neon-2) 80%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shine 6s linear infinite;
-  filter: drop-shadow(0 0 24px rgba(255, 179, 71, 0.35));
+  filter: drop-shadow(0 0 24px rgba(255, 78, 205, 0.35));
+  margin-bottom: 48px;
 }
 
 @keyframes shine {
   to { background-position: 200% 0; }
 }
 
-/* ── сетка карточек ── */
-ol {
-  list-style: none;
-  counter-reset: animals;
-  max-width: 1400px;
-  margin: 72px auto 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 44px 36px;
+h2 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 26px;
+  margin-bottom: 18px;
+  letter-spacing: 0.04em;
 }
 
-/* лёгкий разброс по вертикали */
-@media (min-width: 800px) {
-  ol > li:nth-child(2) { transform: translateY(48px); }
-  ol > li:nth-child(3) { transform: translateY(-14px); }
-  ol > li:nth-child(2):hover { transform: translateY(42px) scale(1.03); }
-  ol > li:nth-child(3):hover { transform: translateY(-20px) scale(1.03); }
+h3 {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 18px;
+  color: var(--muted);
+  margin: 40px 0 16px;
 }
 
-/* ── карточка: жидкое стекло ── */
-ol > li {
-  counter-increment: animals;
+/* постер: жидкое стекло + неон */
+img {
   position: relative;
-  border-radius: 28px;
-  padding: 14px 14px 26px;
+  display: block;
+  width: min(360px, 80vw);
+  border-radius: 24px;
+  padding: 0;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.08),
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(255, 78, 205, 0.18);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+img:hover {
+  transform: scale(1.04) rotate(-1deg);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.14),
+    0 28px 70px rgba(0, 0, 0, 0.7),
+    0 0 70px rgba(0, 224, 198, 0.3);
+}
+
+/* список снеков — стеклянные пилюли */
+ul {
+  list-style: none;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+ul li {
+  padding: 12px 26px;
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02) 60%),
+    rgba(13, 11, 25, 0.7);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  font-weight: 500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+ul li:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 10px 25px rgba(255, 179, 71, 0.25);
+}
+
+/* кнопка трейлера — жидкое стекло + кружащийся неон */
+.trailer-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 18px 44px;
+  border-radius: 999px;
   overflow: hidden;
   isolation: isolate;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  text-decoration: none;
+  color: var(--text);
   background: rgba(255, 255, 255, 0.02);
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
-  animation: rise 0.7s ease backwards;
 }
 
-ol > li:hover {
-  transform: scale(1.03);
-  filter: brightness(1.12);
-}
-
-/* неон, кружащийся вокруг карточки */
-ol > li::before {
+.trailer-btn::before {
   content: '';
   position: absolute;
   z-index: -2;
-  inset: -60%;
+  inset: -150%;
   background: conic-gradient(
     from var(--angle),
     transparent 0deg,
-    var(--neon-1) 60deg,
-    var(--neon-3) 100deg,
-    var(--neon-2) 140deg,
-    transparent 200deg
+    var(--neon-1) 70deg,
+    var(--neon-3) 120deg,
+    var(--neon-2) 170deg,
+    transparent 240deg
   );
-  animation: orbit 5s linear infinite;
+  animation: orbit 4s linear infinite;
 }
-
-ol > li:nth-child(2)::before { animation-duration: 7s; animation-direction: reverse; }
-ol > li:nth-child(3)::before { animation-duration: 6s; }
 
 @keyframes orbit {
   to { --angle: 360deg; }
 }
 
-/* стеклянная поверхность поверх неона */
-ol > li::after {
+.trailer-btn::after {
   content: '';
   position: absolute;
   z-index: -1;
   inset: 2px;
-  border-radius: 26px;
+  border-radius: 999px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02) 35%, transparent 65%),
-    rgba(13, 11, 25, 0.88);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 40%, transparent 70%),
+    rgba(13, 11, 25, 0.85);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-/* ── фото ── */
-li img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 18px;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+.trailer-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  filter: brightness(1.15) drop-shadow(0 12px 30px rgba(255, 78, 205, 0.25));
 }
 
-li:hover img {
-  transform: scale(1.04);
-}
+.trailer-btn:hover::before { animation-duration: 1.6s; }
 
-/* номер поверх фото */
-li h2 {
-  position: relative;
-  font-family: 'Unbounded', sans-serif;
-  font-weight: 700;
-  font-size: 24px;
-  margin: 20px 14px 0;
-  padding-right: 70px;
-}
+.trailer-btn:active { transform: translateY(-1px) scale(1.01); }
 
-li h2::after {
-  content: '0' counter(animals);
-  position: absolute;
-  right: 0;
-  top: -4px;
-  font-size: 38px;
-  font-weight: 800;
-  color: transparent;
-  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.22);
-}
-
-li p {
-  margin: 12px 14px 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-/* появление по очереди */
-@keyframes rise {
-  from { opacity: 0; transform: translateY(30px) scale(0.96); }
-  to   { opacity: 1; }
-}
-
-ol > li:nth-child(1) { animation-delay: 0.05s; }
-ol > li:nth-child(2) { animation-delay: 0.2s; }
-ol > li:nth-child(3) { animation-delay: 0.35s; }
-
-/* ── мобилка ── */
-@media (max-width: 799px) {
-  body { padding: 48px 16px 80px; }
-  ol { gap: 24px; margin-top: 40px; }
+.trailer-btn:focus-visible {
+  outline: 2px solid var(--neon-2);
+  outline-offset: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
