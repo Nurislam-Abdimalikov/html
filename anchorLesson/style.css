@@ -1,0 +1,340 @@
+/* ===== Мои любимые сайты — WOW-версия: жидкое стекло + кружащийся неон ===== */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;500;600&display=swap');
+
+/* анимируемый угол для вращения неона */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:root {
+  --text: #f1effc;
+  --muted: #a7a3bd;
+  --neon-1: #8b5cf6;
+  --neon-2: #00e0c6;
+  --neon-3: #ff4ecd;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #07060f;
+  color: var(--text);
+  min-height: 100vh;
+  padding: 72px 4vw 120px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── живой фон: плавающие неоновые пятна ── */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  z-index: -1;
+  animation: float 18s ease-in-out infinite alternate;
+}
+
+body::before {
+  background: radial-gradient(circle, var(--neon-1), transparent 65%);
+  top: -20vmax;
+  left: -15vmax;
+}
+
+body::after {
+  background: radial-gradient(circle, var(--neon-2), transparent 65%);
+  bottom: -25vmax;
+  right: -15vmax;
+  animation-delay: -9s;
+  animation-duration: 22s;
+}
+
+@keyframes float {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(8vmax, 6vmax) scale(1.15); }
+}
+
+/* ── заголовок ── */
+h1 {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 6vw, 72px);
+  text-align: center;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #fff 10%, var(--neon-1) 45%, var(--neon-3) 70%, var(--neon-2));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 6s linear infinite;
+  filter: drop-shadow(0 0 24px rgba(139, 92, 246, 0.45));
+}
+
+@keyframes shine {
+  to { background-position: 200% 0; }
+}
+
+/* ── сетка по всему экрану ── */
+ol {
+  list-style: none;
+  counter-reset: sites;
+  max-width: 1500px;
+  margin: 72px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 40px 36px;
+}
+
+/* разбросанность: карточки гуляют по вертикали */
+@media (min-width: 800px) {
+  ol > li:nth-child(3n + 2) { transform: translateY(44px); }
+  ol > li:nth-child(3n)     { transform: translateY(-18px); }
+  ol > li:nth-child(3n + 2):hover { transform: translateY(38px) scale(1.03); }
+  ol > li:nth-child(3n):hover     { transform: translateY(-24px) scale(1.03); }
+}
+
+/* ── карточка: жидкое стекло ── */
+ol > li {
+  counter-increment: sites;
+  position: relative;
+  border-radius: 28px;
+  padding: 34px 34px 30px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.02);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+  animation: rise 0.7s ease backwards;
+}
+
+ol > li:hover {
+  transform: scale(1.03);
+  filter: brightness(1.12);
+}
+
+/* неон, кружащийся вокруг карточки */
+ol > li::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -60%;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    var(--neon-1) 60deg,
+    var(--neon-3) 100deg,
+    var(--neon-2) 140deg,
+    transparent 200deg
+  );
+  animation: orbit 5s linear infinite;
+}
+
+/* у соседних карточек неон крутится с разной скоростью */
+ol > li:nth-child(2n)::before  { animation-duration: 7s; animation-direction: reverse; }
+ol > li:nth-child(3n)::before  { animation-duration: 6s; }
+
+@keyframes orbit {
+  to { --angle: 360deg; }
+}
+
+/* стеклянная поверхность поверх неона */
+ol > li::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 2px;
+  border-radius: 26px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02) 35%, transparent 65%),
+    rgba(13, 11, 25, 0.88);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -20px 40px -30px rgba(139, 92, 246, 0.30);
+}
+
+/* огромный полупрозрачный номер на фоне карточки */
+ol > li > a::before {
+  content: counter(sites, decimal-leading-zero);
+  position: absolute;
+  right: 18px;
+  top: 2px;
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 800;
+  font-size: 92px;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.14);
+  pointer-events: none;
+}
+
+/* ── контент ── */
+li a {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--text);
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+li a::after {
+  content: ' ↗';
+  font-size: 16px;
+  background: linear-gradient(90deg, var(--neon-1), var(--neon-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+li:hover a {
+  color: #fff;
+  text-shadow: 0 0 18px rgba(139, 92, 246, 0.9);
+}
+
+li:hover a::after {
+  opacity: 1;
+}
+
+li p {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  transition: color 0.25s ease;
+}
+
+li:hover p {
+  color: #cfcbe6;
+}
+
+/* появление по очереди */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to   { opacity: 1; }
+}
+
+ol > li:nth-child(1) { animation-delay: 0.05s; }
+ol > li:nth-child(2) { animation-delay: 0.15s; }
+ol > li:nth-child(3) { animation-delay: 0.25s; }
+ol > li:nth-child(4) { animation-delay: 0.35s; }
+ol > li:nth-child(5) { animation-delay: 0.45s; }
+ol > li:nth-child(6) { animation-delay: 0.55s; }
+
+/* ── мобилка: одна колонка, без разброса ── */
+@media (max-width: 799px) {
+  body { padding: 48px 16px 80px; }
+  ol { gap: 22px; margin-top: 40px; }
+  ol > li { padding: 26px 24px 24px; }
+  ol > li > a::before { font-size: 64px; }
+}
+
+/* если у человека включено "меньше анимаций" — уважаем */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ── кнопка «Первый Дз» — жидкое стекло ── */
+.hw-link {
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
+}
+
+.hw-link a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 44px;
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--text);
+
+  background: rgba(255, 255, 255, 0.02);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+}
+
+/* стрелочка */
+.hw-link a::marker { content: none; }
+.hw-link a span::after { content: none; }
+
+/* кружащийся неон вокруг кнопки */
+.hw-link a::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  inset: -150%;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    var(--neon-1) 70deg,
+    var(--neon-3) 120deg,
+    var(--neon-2) 170deg,
+    transparent 240deg
+  );
+  animation: orbit 4s linear infinite;
+}
+
+/* стеклянная поверхность поверх неона */
+.hw-link a::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 2px;
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.03) 40%, transparent 70%),
+    rgba(13, 11, 25, 0.85);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -8px 18px rgba(255, 255, 255, 0.04);
+  transition: background 0.35s ease;
+}
+
+/* hover: подъём + свечение + ускорение неона */
+.hw-link a:hover {
+  transform: translateY(-4px) scale(1.05);
+  filter: brightness(1.15) drop-shadow(0 12px 30px rgba(255, 78, 205, 0.25));
+}
+
+.hw-link a:hover::before {
+  animation-duration: 1.6s;
+}
+
+.hw-link a:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+/* фокус с клавиатуры */
+.hw-link a:focus-visible {
+  outline: 2px solid var(--neon-2);
+  outline-offset: 4px;
+}

@@ -1,0 +1,102 @@
+<!-- 3D-сцена: небоскрёбы, облака, паутина-сетка -->
+<div class="scene" aria-hidden="true">
+    <div class="scene-3d">
+        <div class="web-grid-top"></div>
+        <div class="web-grid"></div>
+
+        <div class="skyline">
+            <div class="building b1"></div>
+            <div class="building b2"></div>
+            <div class="building b3"></div>
+            <div class="building b4"></div>
+            <div class="building b5"></div>
+            <div class="building b6"></div>
+            <div class="building b7"></div>
+            <div class="building b8"></div>
+            <div class="building b9"></div>
+            <div class="building b10"></div>
+        </div>
+
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+    </div>
+</div>
+
+<!-- Паутины в углах -->
+<svg class="corner-web tl" viewBox="0 0 200 200" aria-hidden="true">
+    <g stroke="white" stroke-width="1.2" fill="none" opacity="0.85">
+        <line x1="0" y1="0" x2="200" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="100"/>
+        <line x1="0" y1="0" x2="100" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="50"/>
+        <line x1="0" y1="0" x2="50" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="150"/>
+        <line x1="0" y1="0" x2="150" y2="200"/>
+        <path d="M 0,0 Q 30,50 60,30 Q 90,10 120,40"/>
+        <path d="M 0,0 Q 50,30 30,60 Q 10,90 40,120"/>
+        <path d="M 30,30 Q 80,80 130,40"/>
+        <path d="M 60,60 Q 110,90 160,70"/>
+        <path d="M 60,60 Q 90,110 70,160"/>
+    </g>
+</svg>
+<svg class="corner-web tr" viewBox="0 0 200 200" aria-hidden="true">
+    <g stroke="white" stroke-width="1.2" fill="none" opacity="0.85">
+        <line x1="0" y1="0" x2="200" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="100"/>
+        <line x1="0" y1="0" x2="100" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="50"/>
+        <line x1="0" y1="0" x2="50" y2="200"/>
+        <path d="M 30,30 Q 80,80 130,40"/>
+        <path d="M 60,60 Q 110,90 160,70"/>
+        <path d="M 60,60 Q 90,110 70,160"/>
+    </g>
+</svg>
+<svg class="corner-web bl" viewBox="0 0 200 200" aria-hidden="true">
+    <g stroke="white" stroke-width="1.2" fill="none" opacity="0.85">
+        <line x1="0" y1="0" x2="200" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="100"/>
+        <line x1="0" y1="0" x2="100" y2="200"/>
+        <path d="M 30,30 Q 80,80 130,40"/>
+        <path d="M 60,60 Q 110,90 160,70"/>
+    </g>
+</svg>
+<svg class="corner-web br" viewBox="0 0 200 200" aria-hidden="true">
+    <g stroke="white" stroke-width="1.2" fill="none" opacity="0.85">
+        <line x1="0" y1="0" x2="200" y2="200"/>
+        <line x1="0" y1="0" x2="200" y2="100"/>
+        <line x1="0" y1="0" x2="100" y2="200"/>
+        <path d="M 30,30 Q 80,80 130,40"/>
+        <path d="M 60,60 Q 110,90 160,70"/>
+    </g>
+</svg>
+
+<!-- Логотип-паук: вращается в 3D -->
+<div class="spider-logo" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+        <g fill="#ff1a1a" stroke="#0a0a3a" stroke-width="1">
+            <!-- Тело -->
+            <ellipse cx="50" cy="55" rx="18" ry="22"/>
+            <!-- Голова -->
+            <ellipse cx="50" cy="32" rx="12" ry="10"/>
+            <!-- Узор паука на спине -->
+            <path d="M 50,40 L 50,75 M 38,55 L 62,55" stroke="#0a0a3a" stroke-width="2" fill="none"/>
+            <!-- Глаза -->
+            <circle cx="46" cy="30" r="2" fill="white"/>
+            <circle cx="54" cy="30" r="2" fill="white"/>
+        </g>
+        <!-- Лапки: 4 пары -->
+        <g stroke="#0a0a3a" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M 35,45 Q 15,35 10,15"/>
+            <path d="M 65,45 Q 85,35 90,15"/>
+            <path d="M 33,55 Q 10,55 5,45"/>
+            <path d="M 67,55 Q 90,55 95,45"/>
+            <path d="M 33,65 Q 10,70 5,85"/>
+            <path d="M 67,65 Q 90,70 95,85"/>
+            <path d="M 38,75 Q 25,90 15,98"/>
+            <path d="M 62,75 Q 75,90 85,98"/>
+        </g>
+    </svg>
+</div>
+
+<div class="flash" aria-hidden="true"></div>

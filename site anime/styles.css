@@ -1,0 +1,1391 @@
+/* ============================================================
+   AniWave — стили аниме-лендинга (стиль 2026)
+   Задача 2: тема, дизайн-токены, базовый сброс, типографика,
+   глобальный контейнер и утилитарные/компонентные классы.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Дизайн-токены (CSS Custom Properties)
+   ------------------------------------------------------------ */
+:root {
+  /* Фоны / поверхности */
+  --bg-900: #07060d;            /* основной тёмный фон */
+  --bg-800: #0d0b1a;            /* поверхности секций */
+
+  /* Стекло (glassmorphism) */
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+
+  /* Текст */
+  --text-100: #f4f2ff;          /* основной текст */
+  --text-300: #b8b3d6;          /* вторичный текст */
+
+  /* Акцентная палитра */
+  --accent-1: #7c3aed;          /* фиолетовый */
+  --accent-2: #06b6d4;          /* циан */
+  --accent-3: #f43f5e;          /* розово-красный */
+
+  /* Градиенты */
+  --grad-hero:
+    radial-gradient(60% 80% at 15% 10%, rgba(124, 58, 237, 0.55) 0%, transparent 60%),
+    radial-gradient(50% 70% at 85% 20%, rgba(6, 182, 212, 0.40) 0%, transparent 60%),
+    radial-gradient(60% 80% at 70% 90%, rgba(244, 63, 94, 0.35) 0%, transparent 60%),
+    linear-gradient(160deg, var(--bg-800) 0%, var(--bg-900) 100%);
+  --grad-accent: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+  --grad-accent-warm: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-3) 100%);
+  --grad-section:
+    radial-gradient(70% 90% at 50% 0%, rgba(124, 58, 237, 0.18) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-800) 0%, var(--bg-900) 100%);
+  --grad-text: linear-gradient(120deg, var(--text-100) 0%, var(--accent-2) 55%, var(--accent-1) 100%);
+
+  /* Форма / тени */
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  --shadow-glow: 0 0 40px rgba(124, 58, 237, 0.35);
+  --shadow-soft: 0 18px 50px rgba(0, 0, 0, 0.45);
+
+  /* Контейнер и отступы */
+  --container-max: 1200px;
+  --container-pad: clamp(1rem, 4vw, 2.5rem);
+  --section-py: clamp(3.5rem, 8vw, 7rem);
+  --gap: clamp(1rem, 2.5vw, 1.75rem);
+
+  /* Тайминги */
+  --t-fast: 0.3s ease;          /* hover-переходы ровно 300ms */
+  --t-reveal: 0.6s ease;        /* scroll-reveal */
+
+  /* Шрифты */
+  --font-display: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ------------------------------------------------------------
+   Базовый сброс
+   ------------------------------------------------------------ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-900);
+  color: var(--text-100);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* ------------------------------------------------------------
+   Типографика
+   ------------------------------------------------------------ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-100);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 1.8rem + 5vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 1.4rem + 2.4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.45rem);
+  font-weight: 600;
+}
+
+p {
+  color: var(--text-300);
+}
+
+/* ------------------------------------------------------------
+   Доступность: видимый фокус для клавиатуры
+   ------------------------------------------------------------ */
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Скрытие визуального outline только при мыши (фолбэк), фокус через :focus-visible */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ------------------------------------------------------------
+   Глобальный контейнер
+   ------------------------------------------------------------ */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+/* ------------------------------------------------------------
+   Секции
+   ------------------------------------------------------------ */
+.section {
+  padding-block: var(--section-py);
+}
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.section-head .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.section-head h2 {
+  margin: 0;
+}
+
+.section-head p {
+  max-width: 60ch;
+}
+
+/* Акцентный градиентный текст (для заголовков-хайлайтов) */
+.text-gradient {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ------------------------------------------------------------
+   Стекло (glassmorphism)
+   ------------------------------------------------------------ */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Фолбэк для браузеров без backdrop-filter — повышаем непрозрачность фона */
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .glass {
+    background: rgba(13, 11, 26, 0.85);
+  }
+}
+
+/* ------------------------------------------------------------
+   Кнопки
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: transform var(--t-fast), box-shadow var(--t-fast),
+    background-position var(--t-fast), border-color var(--t-fast),
+    background-color var(--t-fast), color var(--t-fast);
+}
+
+/* Primary — градиентный фон из акцентов + свечение */
+.btn-primary {
+  color: #fff;
+  background-image: linear-gradient(120deg, var(--accent-1), var(--accent-2), var(--accent-3));
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  background-position: 100% 50%;
+  box-shadow: 0 0 55px rgba(124, 58, 237, 0.55);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+/* Secondary — glass / outline в акцентной палитре */
+.btn-secondary {
+  color: var(--text-100);
+  background: var(--glass);
+  border-color: var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-2);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.35);
+}
+
+.btn-secondary:active {
+  transform: translateY(-1px);
+}
+
+/* ------------------------------------------------------------
+   Доступность: уважение к prefers-reduced-motion
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Задача 3: Навигация (Navigation_Bar)
+   Sticky-навбар с glassmorphism, логотип, якорные ссылки,
+   кнопка-бургер (скрыта на десктопе). Поведение .scrolled /
+   раскрытие бургера — JS (задача 10) и медиа (задача 9).
+   ============================================================ */
+
+/* Sticky-обёртка навбара со стеклянным фоном (R2.4, R9.3) */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: rgba(13, 11, 26, 0.55);          /* полупрозрачный bg-800 */
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background-color var(--t-fast), box-shadow var(--t-fast),
+    border-color var(--t-fast);
+}
+
+/* Фолбэк для браузеров без backdrop-filter — плотный фон */
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .navbar {
+    background: rgba(13, 11, 26, 0.92);
+  }
+}
+
+/* Уплотнение фона + тень при скролле (класс вешает JS — задача 10) */
+.navbar.scrolled {
+  background: rgba(7, 6, 13, 0.85);
+  border-bottom-color: var(--glass-border);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Внутренний контейнер: 3 зоны (логотип / ссылки / бургер) */
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  padding-block: 0.9rem;
+}
+
+/* Логотип: крупный display-шрифт + неоновая акцентная точка */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-100);
+  line-height: 1;
+  transition: color var(--t-fast);
+}
+
+.logo:hover {
+  color: #fff;
+}
+
+.logo-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--grad-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Горизонтальные ссылки навигации */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.nav-links a {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--text-300);
+  padding: 0.35rem 0.1rem;
+  transition: color var(--t-fast), text-shadow var(--t-fast);
+}
+
+/* Подчёркивание-glow на акцентной палитре (R9.5) */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--grad-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--t-fast);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--text-100);
+  text-shadow: 0 0 18px rgba(6, 182, 212, 0.45);
+}
+
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Выделенная ссылка-CTA в акцентной палитре */
+.nav-links a.nav-cta {
+  color: var(--text-100);
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  transition: border-color var(--t-fast), color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+
+.nav-links a.nav-cta::after {
+  display: none;
+}
+
+.nav-links a.nav-cta:hover,
+.nav-links a.nav-cta:focus-visible {
+  border-color: var(--accent-2);
+  color: #fff;
+  text-shadow: none;
+  box-shadow: 0 0 26px rgba(6, 182, 212, 0.35);
+}
+
+/* Кнопка-бургер: скрыта на десктопе (показ — задача 9, поведение — задача 10) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--text-100);
+  transition: transform var(--t-fast), opacity var(--t-fast),
+    background-color var(--t-fast);
+}
+
+/* Отступ под фикс-навбар для якорной прокрутки (R2.3) */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* ============================================================
+   Задача 4: Hero-секция (первый экран)
+   Полноэкранный фон с оверлеем, неоновые орбы, контент с
+   каскадной анимацией появления (<1500ms), кнопки CTA.
+   ============================================================ */
+
+/* Контейнер hero: полноэкранный, центрирование контента (R3.3) */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-block: clamp(6rem, 14vh, 9rem) clamp(3rem, 8vh, 5rem);
+}
+
+/* Фоновый слой на весь hero: изображение избранного аниме (R3.3).
+   Первый экран — фон подключается сразу, без lazy-loading. */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("https://picsum.photos/seed/anime-hero/1920/1080");
+  background-size: cover;
+  background-position: center;
+  /* Лёгкое масштабирование, чтобы скрыть края при размытии оверлея */
+  transform: scale(1.04);
+}
+
+/* Градиентный затемняющий оверлей поверх изображения для читаемости текста.
+   Сводит фон к var(--bg-900) по краям + добавляет акцентное свечение (R9.2). */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(70% 90% at 20% 25%, rgba(124, 58, 237, 0.40) 0%, transparent 55%),
+    radial-gradient(60% 80% at 85% 75%, rgba(6, 182, 212, 0.30) 0%, transparent 55%),
+    linear-gradient(180deg, rgba(7, 6, 13, 0.55) 0%, rgba(7, 6, 13, 0.78) 55%, var(--bg-900) 100%);
+}
+
+/* Декоративные размытые градиентные орбы для неонового свечения */
+.orb {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+  pointer-events: none;
+  will-change: transform;
+  animation: float 14s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: clamp(18rem, 38vw, 34rem);
+  height: clamp(18rem, 38vw, 34rem);
+  top: -6rem;
+  left: -5rem;
+  background: radial-gradient(circle at 30% 30%, var(--accent-1) 0%, transparent 70%);
+}
+
+.orb-2 {
+  width: clamp(16rem, 32vw, 28rem);
+  height: clamp(16rem, 32vw, 28rem);
+  bottom: -7rem;
+  right: -4rem;
+  background: radial-gradient(circle at 70% 70%, var(--accent-2) 0%, transparent 70%);
+  animation-delay: -7s;
+  animation-duration: 18s;
+}
+
+/* Мягкое бесконечное парение орбов */
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2rem, -1.5rem, 0) scale(1.08);
+  }
+}
+
+/* Контент hero — поверх фона и орбов, ограниченная ширина */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 56rem;
+}
+
+/* Каждый блок контента появляется каскадом (fadeUp).
+   duration 0.7s, delays 0 / 0.15 / 0.3 / 0.45s → весь каскад ~1.15s < 1500ms (R3.5). */
+.hero-badge,
+.hero-title,
+.hero-subtitle,
+.hero-actions,
+.hero-stats {
+  opacity: 0;
+  animation: fadeUp 0.7s ease both;
+}
+
+.hero-badge {
+  animation-delay: 0s;
+}
+
+.hero-title {
+  animation-delay: 0.15s;
+}
+
+.hero-subtitle {
+  animation-delay: 0.3s;
+}
+
+.hero-actions {
+  animation-delay: 0.45s;
+}
+
+.hero-stats {
+  animation-delay: 0.6s;
+}
+
+/* Каскадное появление: прозрачность 0→1 + сдвиг снизу вверх (R3.5) */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Бейдж-пилюля (glass) */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-100);
+}
+
+/* Крупный слоган-заголовок */
+.hero-title {
+  margin-top: 1.4rem;
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.6rem, 1.6rem + 6vw, 5.5rem);
+  line-height: 1.04;
+}
+
+.hero-line {
+  display: block;
+}
+
+/* Подзаголовок-описание */
+.hero-subtitle {
+  max-width: 46ch;
+  margin-bottom: 2rem;
+  font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem);
+  color: var(--text-300);
+}
+
+/* Группа кнопок призыва к действию */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.75rem;
+}
+
+/* Строка статистики */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 5vw, 3.5rem);
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.hero-stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 1.3rem + 1vw, 2.2rem);
+  font-weight: 700;
+  line-height: 1;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-stat-label {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-300);
+}
+
+/* ============================================================
+   Задача 5: Секция трендов (Trending_Grid)
+   Сетка glass-карточек аниме с постером, рейтингом, названием
+   и жанром. Hover-эффект 300ms, фолбэк-слой при ошибке картинки.
+   Медиа-запросы колонок (1/2) — задача 9, здесь только база.
+   ============================================================ */
+
+/* Фон секции — мягкий градиент для глубины (R9.2 покрывается отдельно) */
+.trending {
+  position: relative;
+  background: var(--grad-section);
+}
+
+/* Сетка карточек: десктоп — авто-заполнение колонок (R10.3/9 уточняют мобайл) */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gap);
+}
+
+/* Glass-карточка аниме (R9.3) */
+.anime-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  /* Hover-переход ровно 300ms (R4.4) */
+  transition: transform var(--t-fast), box-shadow var(--t-fast),
+    border-color var(--t-fast);
+}
+
+/* Фолбэк для браузеров без backdrop-filter */
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .anime-card {
+    background: rgba(13, 11, 26, 0.85);
+  }
+}
+
+/* Hover: подъём карточки, усиление свечения, акцентная рамка (R4.4) */
+.anime-card:hover,
+.anime-card:focus-within {
+  transform: translateY(-8px);
+  border-color: var(--accent-2);
+  box-shadow: var(--shadow-soft), 0 0 40px rgba(124, 58, 237, 0.45);
+}
+
+/* Медиа-блок постера: фиксированное соотношение 2:3 (вертикальный постер) */
+.card-media {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  margin: 0;
+  background: var(--bg-800);
+}
+
+/* Постер */
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--t-fast);
+}
+
+/* Лёгкий zoom постера при наведении на карточку */
+.anime-card:hover .card-img,
+.anime-card:focus-within .card-img {
+  transform: scale(1.06);
+}
+
+/* Фолбэк-слой: скрыт по умолчанию, показывается при .img-failed (R11.3, JS — задача 10) */
+.card-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  text-align: center;
+  background: var(--grad-section);
+}
+
+.card-fallback span {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-100);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* При ошибке загрузки постера: прячем img, показываем фолбэк */
+.card-media.img-failed .card-img {
+  display: none;
+}
+
+.card-media.img-failed .card-fallback {
+  display: flex;
+}
+
+/* Бейдж рейтинга — поверх медиа в верхнем углу (glass + акцентная звезда) */
+.card-rating {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.32rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-100);
+  background: rgba(7, 6, 13, 0.6);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .card-rating {
+    background: rgba(7, 6, 13, 0.88);
+  }
+}
+
+/* Акцентная звезда рейтинга */
+.card-rating .star-icon {
+  color: var(--accent-3);
+  flex-shrink: 0;
+}
+
+/* Тело карточки: название + жанр */
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-100);
+}
+
+.card-genre {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent-2);
+}
+
+/* ============================================================
+   Задача 6: Секция жанров (Genre_Section)
+   Градиентный фон секции, «облако» glass-чипов с акцентной
+   рамкой и hover-сменой состояния ровно 300ms (var(--t-fast)).
+   Базовая гибкая раскладка через flex-wrap; мобильное
+   перестроение — задача 9.
+   ============================================================ */
+
+/* Фон секции — градиент с акцентами для глубины (R9.2) */
+.genres {
+  position: relative;
+  background: var(--grad-section);
+}
+
+/* Облако жанров: гибкий центрированный flex с переносом строк */
+.genre-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.6rem, 1.5vw, 1rem);
+}
+
+/* Glass-пилюля жанра (R9.3) */
+.genre-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.3rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: var(--text-300);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  /* Hover/focus-смена состояния ровно 300ms (R5.3) */
+  transition: transform var(--t-fast), box-shadow var(--t-fast),
+    border-color var(--t-fast), background-color var(--t-fast),
+    color var(--t-fast);
+}
+
+/* Фолбэк для браузеров без backdrop-filter */
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .genre-chip {
+    background: rgba(13, 11, 26, 0.85);
+  }
+}
+
+/* Hover/focus: акцентная рамка и фон, подъём, свечение, белый текст (R5.3, R9.5) */
+.genre-chip:hover,
+.genre-chip:focus-visible {
+  transform: translateY(-3px);
+  color: #fff;
+  background-image: var(--grad-accent);
+  border-color: transparent;
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.45);
+}
+
+/* Эмодзи-иконка жанра */
+.genre-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* Название жанра */
+.genre-name {
+  line-height: 1;
+}
+
+/* ============================================================
+   Задача 7: Секция новинок (New_Releases_Section)
+   Сетка упрощённых glass-карточек релизов: постер + название +
+   бейдж «NEW». Переиспользует глобальные .card-media/.card-img/
+   .card-fallback (см. блок «Задача 5»). Hover-подсветка 300ms.
+   Мобильные/планшетные колонки — задача 9, здесь только база.
+   ============================================================ */
+
+/* Фон секции — тёмная поверхность для контраста с соседними
+   градиентными секциями (trending/genres) (R9.1) */
+.new-releases {
+  position: relative;
+  background: var(--bg-900);
+}
+
+/* Сетка релизов: авто-заполнение колонок (мобайл/планшет — задача 9) */
+.releases-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--gap);
+}
+
+/* Glass-карточка релиза (по духу как .anime-card) (R9.3) */
+.release-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  /* Hover-переход ровно 300ms (R11.* визуал, R9.5) */
+  transition: transform var(--t-fast), box-shadow var(--t-fast),
+    border-color var(--t-fast);
+}
+
+/* Фолбэк для браузеров без backdrop-filter */
+@supports not ((backdrop-filter: blur(14px)) or (-webkit-backdrop-filter: blur(14px))) {
+  .release-card {
+    background: rgba(13, 11, 26, 0.85);
+  }
+}
+
+/* Hover: подъём карточки, акцентная рамка, свечение (300ms) */
+.release-card:hover,
+.release-card:focus-within {
+  transform: translateY(-6px);
+  border-color: var(--accent-3);
+  box-shadow: var(--shadow-soft), 0 0 40px rgba(244, 63, 94, 0.40);
+}
+
+/* Лёгкий zoom постера при наведении (переиспользует глобальный .card-img) */
+.release-card:hover .card-img,
+.release-card:focus-within .card-img {
+  transform: scale(1.06);
+}
+
+/* Бейдж «NEW» — абсолютно поверх медиа в верхнем углу,
+   акцентный градиент, uppercase, свечение (R6.* акцент) */
+.release-badge {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: #fff;
+  background-image: var(--grad-accent-warm);
+  box-shadow: 0 0 22px rgba(244, 63, 94, 0.55);
+}
+
+/* Тело карточки релиза: только название (постер + название — R6.3) */
+.release-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1rem 1.1rem 1.2rem;
+}
+
+.release-card .card-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--text-100);
+}
+
+/* ============================================================
+   Задача 8: CTA-секция и Footer
+   CTA — glass-панель с крупным акцентным градиентом, светящимися
+   орбами и центрированным призывом (hover кнопок 300ms).
+   Footer — тёмный фон, сетка колонок ссылок, нижняя строка с
+   копирайтом (год вставит JS в #year — задача 10, статич. фолбэк).
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   CTA-секция (R7.1, R7.2, R7.3, R9.2, R9.3)
+   ------------------------------------------------------------ */
+
+/* Фон секции — тёмная поверхность для контраста с яркой панелью */
+.cta {
+  position: relative;
+  background: var(--bg-900);
+}
+
+/* Glass-панель с крупным градиентным фоном из акцентов (R9.2, R9.3) */
+.cta-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.5rem, 5vw, 4rem);
+  border-radius: clamp(var(--radius), 4vw, 36px);
+  text-align: center;
+  /* Многослойный акцентный градиент поверх стеклянного слоя */
+  background-image:
+    radial-gradient(60% 90% at 18% 12%, rgba(124, 58, 237, 0.55) 0%, transparent 60%),
+    radial-gradient(55% 85% at 85% 25%, rgba(6, 182, 212, 0.42) 0%, transparent 60%),
+    radial-gradient(70% 90% at 70% 95%, rgba(244, 63, 94, 0.42) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(124, 58, 237, 0.28) 0%, rgba(6, 182, 212, 0.20) 100%);
+  background-color: var(--bg-800);
+  border: 1px solid var(--glass-border);
+  /* Крупное мягкое свечение панели */
+  box-shadow: var(--shadow-soft), 0 0 80px rgba(124, 58, 237, 0.35);
+}
+
+/* Орбы внутри панели позиционируются абсолютно (переиспользуют .orb/.float) */
+.cta-panel .orb {
+  z-index: 0;
+}
+
+/* Контент поверх орбов и градиента */
+.cta-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.cta-content .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+.cta-content h2 {
+  margin: 0;
+}
+
+.cta-content p {
+  max-width: 52ch;
+  color: var(--text-300);
+}
+
+/* Группа кнопок CTA — hover-переход 300ms наследуется от .btn (R7.3) */
+.cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+/* ------------------------------------------------------------
+   Footer (R8.1, R8.2, R8.3, R9.5)
+   ------------------------------------------------------------ */
+
+/* Тёмный фон + верхняя рамка-разделитель */
+.footer {
+  position: relative;
+  background: var(--bg-800);
+  border-top: 1px solid var(--glass-border);
+  padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2rem);
+}
+
+/* Сетка: бренд-блок шире + 3 колонки ссылок. auto-fit/minmax
+   обеспечивает базовую адаптивность (детальный мобайл — задача 9). */
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.5fr repeat(3, 1fr);
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+
+/* Бренд-блок */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-width: 34ch;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text-100);
+  transition: color var(--t-fast);
+}
+
+.footer-logo:hover {
+  color: #fff;
+}
+
+.footer-tagline {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-300);
+}
+
+/* Колонка ссылок */
+.footer-col h4 {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-100);
+}
+
+.footer-col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+/* Ссылки футера — hover-переход цвета к акценту за 300ms (R9.5) */
+.footer-col a {
+  font-size: 0.95rem;
+  color: var(--text-300);
+  transition: color var(--t-fast), text-shadow var(--t-fast);
+}
+
+.footer-col a:hover,
+.footer-col a:focus-visible {
+  color: var(--accent-2);
+  text-shadow: 0 0 18px rgba(6, 182, 212, 0.4);
+}
+
+/* Нижняя строка: отделена рамкой сверху, мелкий вторичный текст */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.25rem, 3vw, 1.75rem);
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-300);
+}
+
+/* ============================================================
+   Задача 9: Адаптивность
+   Брейкпоинты: <768px (мобайл), 768–1024px (планшет),
+   >1024px (десктоп). Колонки сеток монотонно не убывают:
+   1 (мобайл) ≤ 2 (планшет) ≤ 3–4 (десктоп). Защита от
+   горизонтального скролла от 320px. Переиспользует токены
+   :root; @media (prefers-reduced-motion) и @supports для
+   backdrop-filter уже объявлены выше и здесь не дублируются.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   Защита от горизонтального скролла от 320px (R10.4)
+   Длинные слова не должны распирать layout — переносим их.
+   ------------------------------------------------------------ */
+.hero-title,
+.card-title,
+.footer-tagline {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* На очень узких экранах слегка поджимаем боковые отступы,
+   чтобы контент гарантированно помещался от 320px (R10.4) */
+@media (max-width: 360px) {
+  :root {
+    --container-pad: 0.85rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   A) Мобильный: < 768px (R2.5, R4.5, R10.2)
+   ------------------------------------------------------------ */
+@media (max-width: 767.98px) {
+  /* Показываем кнопку-бургер (раскрытие меню — JS, задача 10) */
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Меню превращается в раскрываемый оверлей под навбаром.
+     По умолчанию скрыто; класс .open вешает JS (задача 10). */
+  .nav-links {
+    position: fixed;
+    top: 4.5rem;                 /* под фикс-навбаром (~72px) */
+    right: 1rem;
+    left: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    background: rgba(13, 11, 26, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-soft);
+    /* Скрытое исходное состояние */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity var(--t-fast), transform var(--t-fast),
+      visibility var(--t-fast);
+  }
+
+  /* Фолбэк фона для браузеров без backdrop-filter */
+  @supports not ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
+    .nav-links {
+      background: rgba(13, 11, 26, 0.98);
+    }
+  }
+
+  /* Раскрытое состояние (класс .open добавляет JS — задача 10) */
+  .nav-links.open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* Ссылки в столбце — крупнее зона нажатия */
+  .nav-links a {
+    padding: 0.65rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .nav-links a.nav-cta {
+    text-align: center;
+    margin-top: 0.25rem;
+  }
+
+  /* Анимация бургера в крестик при открытом меню (aria-expanded="true") */
+  .nav-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Все сетки и секции — в одну колонку (R4.5, R10.2) */
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .releases-row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  /* Нижняя строка футера — по центру на узких экранах */
+  .footer-bottom {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Поджимаем gap статистики hero, чтобы не переполнять ширину */
+  .hero-stats {
+    gap: clamp(1rem, 6vw, 1.75rem);
+  }
+}
+
+/* ------------------------------------------------------------
+   B) Планшет: 768px – 1024px (R10.3)
+   Сетки карточек — 2 колонки.
+   ------------------------------------------------------------ */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .releases-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ------------------------------------------------------------
+   C) Десктоп: > 1024px (R10.3)
+   Монотонность колонок: trending — 4, новинки — 3.
+   ------------------------------------------------------------ */
+@media (min-width: 1025px) {
+  .cards-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .releases-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================================
+   Задача 10: Scroll-reveal состояния (R9.6) + устойчивость к
+   отключённому JS (Error Handling).
+   Скрытие применяется ТОЛЬКО при наличии класса .js (его вешает
+   крошечный инлайн-скрипт в <head>). Без JS класс .js не
+   добавляется → reveal-элементы видимы всегда и контент не
+   остаётся скрытым навсегда.
+   ============================================================ */
+
+/* Исходное скрытое состояние reveal-элементов (только при включённом JS) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--t-reveal), transform var(--t-reveal);
+  will-change: opacity, transform;
+}
+
+/* Видимое состояние — класс .in-view добавляет IntersectionObserver (JS) */
+.js [data-reveal].in-view {
+  opacity: 1;
+  transform: none;
+}
+
+/* Доступность: при prefers-reduced-motion reveal-элементы сразу видимы,
+   без сдвига и анимации (подстраховка к глобальному правилу). */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

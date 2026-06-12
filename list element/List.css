@@ -1,0 +1,114 @@
+/* ===== Базовые сбросы ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== Фон страницы с картинкой ===== */
+body {
+  font-family: "Georgia", "Times New Roman", serif;
+  color: #3a2218;
+  line-height: 1.7;
+  min-height: 100vh;
+  padding: 40px 20px;
+
+  /* Полупрозрачный тёплый слой поверх картинки, чтобы текст читался */
+  background:
+    linear-gradient(
+      rgba(255, 244, 230, 0.85),
+      rgba(255, 230, 200, 0.85)
+    ),
+    url("img/background.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* ===== Заголовки ===== */
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  color: #6b3410;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  position: relative;
+  padding-bottom: 15px;
+}
+
+h1::after {
+  content: "🍩";
+  display: block;
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #8b4513;
+  margin: 30px 0 15px;
+  border-bottom: 3px double #c98a5b;
+  padding-bottom: 8px;
+}
+
+h3 {
+  font-size: 1.4rem;
+  color: #a0522d;
+  margin: 20px 0 10px;
+  font-style: italic;
+}
+
+/* ===== Карточка-контейнер для списков ===== */
+ul,
+ol {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 12px;
+  padding: 20px 30px 20px 50px;
+  margin: 15px 0 25px;
+  box-shadow: 0 6px 18px rgba(107, 52, 16, 0.15);
+  border-left: 6px solid #c98a5b;
+  max-width: 700px;
+}
+
+/* ===== Пункты списков ===== */
+li {
+  padding: 6px 0;
+  font-size: 1.05rem;
+  border-bottom: 1px dashed rgba(201, 138, 91, 0.4);
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li:hover {
+  color: #6b3410;
+  transform: translateX(5px);
+  transition: all 0.3s ease;
+}
+
+/* Маркеры для ul */
+ul li::marker {
+  content: "🍂  ";
+  color: #8b4513;
+}
+
+/* Цифры в ol покрасим */
+ol li::marker {
+  color: #6b3410;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* ===== Адаптив ===== */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  ul,
+  ol {
+    padding: 15px 20px 15px 40px;
+  }
+}

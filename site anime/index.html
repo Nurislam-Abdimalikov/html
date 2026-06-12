@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AniWave — аниме-лендинг 2026</title>
+
+  <!-- Помечаем документ как «JS включён» до рендера, чтобы избежать вспышки
+       скрытого контента. Без JS класс .js не добавится и scroll-reveal
+       элементы остаются видимыми всегда (устойчивость к отключённому JS). -->
+  <script>document.documentElement.classList.add('js');</script>
+
+  <!-- Google Fonts: Space Grotesk (дисплейный шрифт для заголовков) + Inter (текст) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- 1. Navigation_Bar -->
+  <header class="navbar">
+    <div class="nav-inner container">
+      <!-- Логотип -->
+      <a class="logo" href="#hero" aria-label="AniWave — на главную">
+        AniWave<span class="logo-dot" aria-hidden="true"></span>
+      </a>
+
+      <!-- Ссылки-якори на секции -->
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#trending">Тренды</a>
+        <a href="#genres">Жанры</a>
+        <a href="#new">Новинки</a>
+        <a href="#cta" class="nav-cta">Подписаться</a>
+      </nav>
+
+      <!-- Кнопка-бургер (мобильное меню, поведение — задача 10) -->
+      <button class="nav-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 2. Hero_Section -->
+  <section id="hero" class="hero">
+    <!-- Фоновый слой: изображение избранного аниме + затемняющий градиент-оверлей.
+         Первый экран — без lazy-loading (фон подключается через CSS background-image). -->
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <!-- Декоративные неоновые орбы для свечения -->
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+
+    <!-- Контент -->
+    <div class="hero-content container">
+      <span class="hero-badge glass">✦ Открой мир аниме 2026</span>
+
+      <h1 class="hero-title">
+        <span class="hero-line">Твоя вселенная</span>
+        <span class="hero-line"><span class="text-gradient">аниме</span> начинается здесь</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Тренды сезона, культовая классика и свежие релизы — собрано в одном месте.
+        Погрузись в атмосферу с первого кадра.
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#trending">Смотреть тренды</a>
+        <a class="btn btn-secondary" href="#genres">Открыть жанры</a>
+      </div>
+
+      <!-- Строка статистики -->
+      <dl class="hero-stats">
+        <div class="hero-stat">
+          <dt class="hero-stat-value">12К+</dt>
+          <dd class="hero-stat-label">тайтлов в каталоге</dd>
+        </div>
+        <div class="hero-stat">
+          <dt class="hero-stat-value">4.9</dt>
+          <dd class="hero-stat-label">средний рейтинг</dd>
+        </div>
+        <div class="hero-stat">
+          <dt class="hero-stat-value">24/7</dt>
+          <dd class="hero-stat-label">новинки сезона</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 3. Trending_Grid -->
+  <section id="trending" class="trending section" data-reveal>
+    <div class="container">
+      <!-- Заголовок секции -->
+      <div class="section-head">
+        <span class="eyebrow">✦ В тренде сейчас</span>
+        <h2>Трендовые аниме сезона</h2>
+        <p>Подборка тайтлов, которые сейчас смотрят больше всего — от культовой классики до свежих хитов.</p>
+      </div>
+
+      <!-- Сетка карточек (≥6 по требованию, здесь 8) -->
+      <div class="cards-grid">
+
+        <!-- 1 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/demon-slayer/400/560"
+                 alt="Постер аниме Клинок, рассекающий демонов" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Клинок, рассекающий демонов</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              8.9
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Клинок, рассекающий демонов</h3>
+            <p class="card-genre">Экшен</p>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/jujutsu-kaisen/400/560"
+                 alt="Постер аниме Магическая битва" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Магическая битва</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              8.7
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Магическая битва</h3>
+            <p class="card-genre">Сёнэн</p>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/attack-on-titan/400/560"
+                 alt="Постер аниме Атака титанов" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Атака титанов</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              9.1
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Атака титанов</h3>
+            <p class="card-genre">Драма</p>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/one-piece/400/560"
+                 alt="Постер аниме Ван Пис" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Ван Пис</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              9.0
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Ван Пис</h3>
+            <p class="card-genre">Приключения</p>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/chainsaw-man/400/560"
+                 alt="Постер аниме Человек-бензопила" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Человек-бензопила</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              8.6
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Человек-бензопила</h3>
+            <p class="card-genre">Экшен</p>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/spy-x-family/400/560"
+                 alt="Постер аниме Шпион x Семья" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Шпион x Семья</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              8.5
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Шпион x Семья</h3>
+            <p class="card-genre">Комедия</p>
+          </div>
+        </article>
+
+        <!-- 7 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/my-hero-academia/400/560"
+                 alt="Постер аниме Моя геройская академия" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Моя геройская академия</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              8.3
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Моя геройская академия</h3>
+            <p class="card-genre">Сёнэн</p>
+          </div>
+        </article>
+
+        <!-- 8 -->
+        <article class="anime-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/death-note/400/560"
+                 alt="Постер аниме Тетрадь смерти" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Тетрадь смерти</span></div>
+            <span class="card-rating">
+              <svg class="star-icon" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 2l2.9 6.2 6.8.8-5 4.6 1.3 6.7L12 17.8 5.9 20.3l1.3-6.7-5-4.6 6.8-.8L12 2z"/>
+              </svg>
+              9.0
+            </span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Тетрадь смерти</h3>
+            <p class="card-genre">Триллер</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Genre_Section -->
+  <section id="genres" class="genres section" data-reveal>
+    <div class="container">
+      <!-- Заголовок секции -->
+      <div class="section-head">
+        <span class="eyebrow">✦ Жанры</span>
+        <h2>Выбери своё настроение</h2>
+        <p>От эпичных сражений до тихих романтических историй — найди жанр под любое настроение.</p>
+      </div>
+
+      <!-- Облако жанров: ≥6 по требованию, здесь 10 чипов -->
+      <div class="genre-grid">
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">⚔️</span>
+          <span class="genre-name">Сёнэн</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🗡️</span>
+          <span class="genre-name">Сэйнэн</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">💞</span>
+          <span class="genre-name">Романтика</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🐉</span>
+          <span class="genre-name">Фэнтези</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🤖</span>
+          <span class="genre-name">Меха</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🏆</span>
+          <span class="genre-name">Спокон</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🧠</span>
+          <span class="genre-name">Психология</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">🌸</span>
+          <span class="genre-name">Сёдзё</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">😂</span>
+          <span class="genre-name">Комедия</span>
+        </a>
+        <a class="genre-chip" href="#">
+          <span class="genre-icon" aria-hidden="true">👻</span>
+          <span class="genre-name">Ужасы</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. New_Releases_Section -->
+  <section id="new" class="new-releases section" data-reveal>
+    <div class="container">
+      <!-- Заголовок секции -->
+      <div class="section-head">
+        <span class="eyebrow">✦ Новинки</span>
+        <h2>Свежие релизы сезона</h2>
+        <p>Только что вышедшие тайтлы и громкие премьеры — добавляй в список, пока все обсуждают.</p>
+      </div>
+
+      <!-- Ряд новинок: ≥4 по требованию, здесь 6 release-card -->
+      <div class="releases-row">
+
+        <!-- 1 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/frieren-release/360/480"
+                 alt="Постер аниме Провожающая в последний путь Фрирен" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Провожающая в последний путь Фрирен</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Провожающая в последний путь Фрирен</h3>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/solo-leveling-release/360/480"
+                 alt="Постер аниме Соло-прокачка" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Соло-прокачка</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Соло-прокачка</h3>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/blue-eye-samurai-release/360/480"
+                 alt="Постер аниме Голубоглазый самурай" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Голубоглазый самурай</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Голубоглазый самурай</h3>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/kimetsu-hashira-release/360/480"
+                 alt="Постер аниме Истребитель демонов: Тренировки столпов" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Истребитель демонов: Тренировки столпов</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Истребитель демонов: Тренировки столпов</h3>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/dandadan-release/360/480"
+                 alt="Постер аниме Дандадан" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Дандадан</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Дандадан</h3>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="release-card" data-reveal>
+          <figure class="card-media">
+            <img class="card-img"
+                 src="https://picsum.photos/seed/sakamoto-days-release/360/480"
+                 alt="Постер аниме Сакамото Дэйс" loading="lazy">
+            <div class="card-fallback" aria-hidden="true"><span>Сакамото Дэйс</span></div>
+            <span class="release-badge">NEW</span>
+          </figure>
+          <div class="card-body">
+            <h3 class="card-title">Сакамото Дэйс</h3>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CTA_Section -->
+  <section id="cta" class="cta section" data-reveal>
+    <div class="container">
+      <!-- Glass-панель с крупным градиентным фоном и светящимися орбами -->
+      <div class="cta-panel glass">
+        <!-- Декоративные орбы (переиспользуют общий .orb + @keyframes float) -->
+        <div class="orb orb-1" aria-hidden="true"></div>
+        <div class="orb orb-2" aria-hidden="true"></div>
+
+        <!-- Контент поверх орбов -->
+        <div class="cta-content">
+          <span class="eyebrow">✦ Время действовать</span>
+          <h2>Готов начать своё <span class="text-gradient">аниме-приключение</span>?</h2>
+          <p>
+            Создай бесплатный профиль, собери список любимого и получай свежие
+            релизы сезона первым. Тысячи тайтлов уже ждут тебя.
+          </p>
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="#hero">Присоединиться бесплатно</a>
+            <a class="btn btn-secondary" href="#trending">Смотреть тренды</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <!-- Бренд-блок -->
+        <div class="footer-brand">
+          <a class="footer-logo" href="#hero" aria-label="AniWave — на главную">
+            AniWave<span class="logo-dot" aria-hidden="true"></span>
+          </a>
+          <p class="footer-tagline">
+            Твоя вселенная аниме 2026: тренды сезона, культовая классика и свежие
+            релизы — собрано в одном месте.
+          </p>
+        </div>
+
+        <!-- Колонка: Навигация -->
+        <nav class="footer-col" aria-label="Навигация по сайту">
+          <h4>Навигация</h4>
+          <ul>
+            <li><a href="#trending">Тренды</a></li>
+            <li><a href="#genres">Жанры</a></li>
+            <li><a href="#new">Новинки</a></li>
+          </ul>
+        </nav>
+
+        <!-- Колонка: Сообщество -->
+        <nav class="footer-col" aria-label="Сообщество">
+          <h4>Сообщество</h4>
+          <ul>
+            <li><a href="#">Блог</a></li>
+            <li><a href="#">Форум</a></li>
+            <li><a href="#">Поддержка</a></li>
+          </ul>
+        </nav>
+
+        <!-- Колонка: Соцсети -->
+        <nav class="footer-col" aria-label="Социальные сети">
+          <h4>Соцсети</h4>
+          <ul>
+            <li><a href="#">Telegram</a></li>
+            <li><a href="#">Discord</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <!-- Нижняя строка: копирайт со статическим фолбэк-годом (JS обновит #year — задача 10) -->
+      <div class="footer-bottom">
+        <p class="footer-copy">© <span id="year">2026</span> AniWave. Все права защищены.</p>
+        <p class="footer-made">Сделано с ♥ для любителей аниме</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
