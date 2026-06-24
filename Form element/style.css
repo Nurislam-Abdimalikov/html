@@ -1,0 +1,201 @@
+/* ===========================================================
+   User Registration — neobrutalist style
+   подключается через <link rel="stylesheet" href="./style.css">
+   =========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+    --bg-1:#B9A6FF;
+    --bg-2:#7C5CFF;
+    --ink:#16121F;
+    --surface:#FFFFFF;
+    --surface-2:#F3EFFF;
+    --muted:#6B6580;
+    --accent:#FFC93C;
+    --accent-press:#F2B713;
+    --focus:#6D28D9;
+    --radius:14px;
+    --shadow:8px 8px 0 var(--ink);
+}
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:28px;
+    padding:40px 18px;
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    color:var(--ink);
+    background:radial-gradient(130% 130% at 0% 0%, var(--bg-1) 0%, var(--bg-2) 100%);
+    background-attachment:fixed;
+}
+
+/* заголовок */
+h1{
+    margin:0;
+    width:100%;
+    max-width:480px;
+    font-family:'Bricolage Grotesque', 'Inter', sans-serif;
+    font-weight:800;
+    font-size:clamp(2rem, 6vw, 2.8rem);
+    line-height:1.02;
+    letter-spacing:-0.02em;
+    color:var(--surface);
+    text-shadow:3px 3px 0 var(--ink);
+}
+
+/* карточка-форма */
+form{
+    width:100%;
+    max-width:480px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding:30px 28px 34px;
+    background:var(--surface);
+    border:3px solid var(--ink);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+}
+
+/* <br> которые стоят прямо в форме — это просто разделители-отступы.
+   гасим их, расстояние между полями держит flex gap */
+form > br{ display:none; }
+
+/* метки полей */
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+    font-size:.82rem;
+    letter-spacing:.01em;
+}
+
+/* текстовые поля + select */
+input[type="text"],
+input[type="password"],
+input[type="date"],
+select{
+    display:block;
+    width:100%;
+    padding:12px 14px;
+    font-family:inherit;
+    font-size:.95rem;
+    color:var(--ink);
+    background:var(--surface-2);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    outline:none;
+    transition:transform .12s ease, box-shadow .12s ease,
+               border-color .12s ease, background .12s ease;
+}
+
+input::placeholder{ color:var(--muted); }
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+select:focus{
+    background:var(--surface);
+    border-color:var(--focus);
+    box-shadow:4px 4px 0 var(--focus);
+    transform:translate(-2px, -2px);
+}
+
+/* своя стрелка у select */
+select{
+    appearance:none;
+    -webkit-appearance:none;
+    cursor:pointer;
+    padding-right:42px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2316121F' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+}
+
+/* кастомные радио и чекбокс */
+input[type="radio"],
+input[type="checkbox"]{
+    appearance:none;
+    -webkit-appearance:none;
+    width:22px;
+    height:22px;
+    margin:4px 8px 0 0;
+    border:2.5px solid var(--ink);
+    background:var(--surface);
+    cursor:pointer;
+    vertical-align:-5px;
+    transition:transform .1s ease, box-shadow .1s ease;
+}
+input[type="radio"]{ border-radius:50%; }
+input[type="checkbox"]{ border-radius:6px; }
+
+input[type="radio"]:checked{
+    background:radial-gradient(var(--focus) 0 42%, var(--surface) 48% 100%);
+}
+input[type="checkbox"]:checked{
+    background-color:var(--focus);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:center;
+}
+input[type="radio"]:focus-visible,
+input[type="checkbox"]:focus-visible{
+    box-shadow:0 0 0 3px var(--accent);
+}
+
+/* метки рядом с радио/чекбоксом — в строку, не блоком */
+input[type="radio"] + label,
+input[type="checkbox"] + label{
+    display:inline;
+    margin:0;
+    font-weight:500;
+    font-size:.9rem;
+    cursor:pointer;
+}
+
+/* кнопка — главный акцент */
+button{
+    margin-top:6px;
+    padding:14px 18px;
+    font-family:'Bricolage Grotesque', 'Inter', sans-serif;
+    font-weight:800;
+    font-size:1.05rem;
+    letter-spacing:.01em;
+    color:var(--ink);
+    background:var(--accent);
+    border:3px solid var(--ink);
+    border-radius:var(--radius);
+    cursor:pointer;
+    box-shadow:5px 5px 0 var(--ink);
+    transition:transform .1s ease, box-shadow .1s ease, background .1s ease;
+}
+button:hover{
+    background:var(--accent-press);
+    transform:translate(-2px, -2px);
+    box-shadow:7px 7px 0 var(--ink);
+}
+button:active{
+    transform:translate(5px, 5px);
+    box-shadow:0 0 0 var(--ink);
+}
+
+/* мобилка */
+@media (max-width:520px){
+    form{
+        padding:24px 20px 28px;
+        box-shadow:6px 6px 0 var(--ink);
+    }
+    h1{ text-shadow:2px 2px 0 var(--ink); }
+}
+
+/* уважаем системную настройку «меньше движения» */
+@media (prefers-reduced-motion:reduce){
+    *{ transition:none !important; }
+}

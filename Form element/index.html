@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <h1>User Registration</h1>
+
+    <form action="/register" method="get">
+        
+        <div>
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" id="firstname" placeholder="First Name">
+        </div>
+
+        <br>
+
+        <div>
+            <label for="Lastname">Last Name</label>
+            <input type="text" name="Lastname" id="Lastname" placeholder="Lastname">
+        </div>
+
+        <br>
+
+        <div>
+            <label for="emailaddress">Email Address</label>
+                <input type="text" id="emailaddress" name="emailaddress" placeholder="emailaddress">
+            </div>
+
+            <br>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="password">
+        </div>
+
+        <br>
+
+        <div>
+            <label for="confirmpassword">Confirm Password</label>
+            <input type="password" id="confirmpassword" name="confirmpassword" placeholder="confirmpassword">
+        </div>
+
+        <br>
+
+        <div>
+            <label>Gender:</label>
+            <br>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male">Male</label>
+
+            <br>
+
+            <input type="radio" name="gender" id="female" value="female">
+            <label for="female">Female</label>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="date">Date of Brith:</label>
+            <input type="date" name="date" id="date">
+        </div>
+
+        <br>
+
+        <div>
+            <label for="country">Country:</label> <br>
+            <select name="country" id="country">
+                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                <option value="Kazakhstan">Kazakhstan</option>
+                <option value="Uzbekistan">Uzbekistan</option>
+                <option value="USA">USA</option>
+                <option value="China">China</option>
+                <option value="Japan">Japan</option>
+            </select>
+        </div>
+
+        <br>
+
+        <div>
+            <input type="checkbox" name="checkbox" id="checkbox">
+            <label for="checkbox">I agree to the terms and conditions</label>
+        </div>
+
+        <br>
+
+        <button>Register</button>
+    </form>
+
+    <script src="./main.js"></script>
+</body>
+</html>
